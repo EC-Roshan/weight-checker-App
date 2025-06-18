@@ -13,4 +13,5 @@
     <string name="Pounds">Pounds</string>
     <string name="Calculate_weight">Calculate Weight</string>
     <string name="Select_a_planet">Select a Planet</string>
+    <string name="Calculate_Weight">Calculate Weight:</string>
 </resources>

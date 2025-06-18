@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
 
     // Create planet array
-    private val planets = arrayOf(" ","Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Moon" )
+    private val planets = arrayOf("","Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Moon" )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         val result = findViewById<TextView>(R.id.tvResult)
         val radioKilograms = findViewById<RadioButton>(R.id.radioButton1)
         val radioPounds = findViewById<RadioButton>(R.id.radioButton2)
+        val radioKilograms1 = findViewById<RadioButton>(R.id.radioButton3)
+        val radioPounds1 = findViewById<RadioButton>(R.id.radioButton4)
 
 
         val adapter = ArrayAdapter(this, R.layout.spinner_item, planets)
@@ -40,58 +42,83 @@ class MainActivity : AppCompatActivity() {
             val weight = weightText.toDoubleOrNull()
 
             if (weight != null) {
-                val (calculatedWeight, explanation) = calculateWeightOnPlanet(weight, selectedPlanet)
+                val isKgInput = radioKilograms.isChecked
+                val isLbInput = radioPounds.isChecked
+                val isKgOutput = radioKilograms1.isChecked
+                val isLbOutput = radioPounds1.isChecked
 
-                var finalWeight = calculatedWeight
-
-                if (radioPounds.isChecked) {
-                    finalWeight *= 2.20462 // Convert kg to lbs
-                    result.text = "Your Weight on $selectedPlanet: $finalWeight lbs \n\nDo you know that?: $explanation"
-               } else if (radioKilograms.isChecked){
-                    finalWeight = finalWeight
-                   result.text = "Your Weight on $selectedPlanet: $finalWeight Kg \n\nDo you know that?: $explanation"
-             }else{
-                     result.text= "No Option Selected"
+                if (!isKgInput && !isLbInput) {
+                    result.text = "Please select the input unit (kg or lbs)."
+                    return@setOnClickListener
                 }
+
+                if (!isKgOutput && !isLbOutput) {
+                    result.text = "Please select the output unit (kg or lbs)."
+                    return@setOnClickListener
+                }
+
+                // Convert input weight to both formats
+                val inputKg = if (isKgInput) weight else weight * 0.453592
+                val inputLb = if (isKgInput) weight * 2.20462 else weight
+
+                val (gravityFactor, explanation) = getGravityFactorAndExplanation(weight ,selectedPlanet)
+
+                if (gravityFactor == 0.0) {
+                    result.text = "Please select a valid planet."
+                    return@setOnClickListener
+                }
+
+                // Calculate planetary weight
+                val calculatedWeightInKg = inputKg * gravityFactor
+                val calculatedWeightInLbs = inputLb * gravityFactor
+
+                val finalWeight = if (isKgOutput) calculatedWeightInKg else calculatedWeightInLbs
+                val unitLabel = if (isKgOutput) "Kg" else "lbs"
+
+                result.text =
+                    "Your Weight on $selectedPlanet: %.2f $unitLabel\n\nDid you know?  $explanation"
+                        .format(finalWeight)
+
+            } else {
+                result.text = "Please enter a valid weight."
             }
         }
     }
-
-    private fun calculateWeightOnPlanet(weight: Double, planet: String): Pair<Double, String> {
+    private fun getGravityFactorAndExplanation(weight: Double, planet: String): Pair<Double, String> {
         val weightOnPlanet: Double
         val description: String
 
         when (planet) {
             "Mercury" -> {
-                weightOnPlanet = weight * 0.38
+                weightOnPlanet =  0.38
                 description = "Mercury has weak gravity due to its small size—about 38% of Earth's."
             }
             "Venus" -> {
-                weightOnPlanet = weight * 0.91
+                weightOnPlanet =  0.91
                 description = "Venus' gravity is 91% of Earth's, due to its similar size."
             }
             "Earth" -> {
-                weightOnPlanet = weight
+                weightOnPlanet = 1.0
                 description = "Earth's gravity defines your normal weight."
             }
             "Mars" -> {
-                weightOnPlanet = weight * 0.38
+                weightOnPlanet = 0.38
                 description = "Mars' gravity is much weaker than Earth's, at only 38%."
             }
             "Jupiter" -> {
-                weightOnPlanet = weight * 2.34
+                weightOnPlanet =  2.34
                 description = "Jupiter is massive, making its gravity 2.34 times stronger than Earth's."
             }
             "Saturn" -> {
-                weightOnPlanet = weight * 0.92
+                weightOnPlanet =  0.92
                 description = "Saturn’s gravity is slightly weaker than Earth's, at 92%."
             }
             "Uranus", "Neptune" -> {
-                weightOnPlanet = weight * 1.19
+                weightOnPlanet =  1.19
                 description = "$planet has stronger gravity due to its large size—1.19 times Earth's."
             }
             "Moon" -> {
-                weightOnPlanet = weight * 0.165
+                weightOnPlanet =  0.165
                 description = "The Moon's gravity is very weak—only 16.5% of Earth's."
             }
             else -> {
