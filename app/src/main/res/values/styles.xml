@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="WhiteSpinnerStyle" parent="Theme.AppCompat.Light">
+        <item name="android:popupBackground">#FFFFFF</item> <!-- White dropdown -->
+        <item name="android:textColor">#000000</item>       <!-- Black text -->
+    </style>
+</resources>

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">weightchecker</string>
+    <string name="enter_your_weight">Enter your Weight</string>
+    <string name="calculateweight">CalculateWeight</string>
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="calculate_weight">Calculate Weight</string>
+    <string name="kilograms">Kilograms</string>
+    <string name="pounds">Pounds</string>
+    <string name="select_a_planet">Select a Planet:</string>
+    <string name="Enter_your_weight">Enter Your Weight:</string>
+    <string name="enter_your_Weight">Enter Your Weight</string>
+    <string name="Kilograms">Kilograms</string>
+    <string name="Pounds">Pounds</string>
+    <string name="Calculate_weight">Calculate Weight</string>
+    <string name="Select_a_planet">Select a Planet</string>
+</resources>
