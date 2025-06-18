@@ -75,9 +75,8 @@ class MainActivity : AppCompatActivity() {
                 val finalWeight = if (isKgOutput) calculatedWeightInKg else calculatedWeightInLbs
                 val unitLabel = if (isKgOutput) "Kg" else "lbs"
 
-                result.text =
-                    "Your Weight on $selectedPlanet: %.2f $unitLabel\n\nDid you know?  $explanation"
-                        .format(finalWeight)
+                 val formattedWeight = String.format("%.2f", finalWeight)
+                result.text = "Your Weight on $selectedPlanet: $formattedWeight $unitLabel\n\nDid you know? $explanation"
 
             } else {
                 result.text = "Please enter a valid weight."
